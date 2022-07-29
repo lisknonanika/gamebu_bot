@@ -106,7 +106,7 @@ const run = async() => {
 /**
  * CronJob
  */
-const job = new CronJob('* */3 * * * *', async() => await run());
+const job = new CronJob('*/3 * * * *', async() => await run());
 
 /**
  * 起動
