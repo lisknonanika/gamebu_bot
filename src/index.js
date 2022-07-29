@@ -33,6 +33,7 @@ const run = async() => {
         }
 
         // 取得したDMを処理
+        let isDateUpd = false;
         for (let msg of msgs.reverse()) {
             const data = twitter.getParam(msg.text);
             if (data === null) continue;
@@ -63,6 +64,7 @@ const run = async() => {
                             recipient_id: msg.sender,
                             text: `> ${msg.text}\r\nこれやりました。\r\n${new Date().toLocaleString()}`
                         });
+                        isDateUpd = true;
     
                     } else if (data.job === JOB_ACT.DELETE) {
                         await mysql.deleteFriend(mysqlConnection, data.param);
@@ -70,6 +72,7 @@ const run = async() => {
                             recipient_id: msg.sender,
                             text: `> ${msg.text}\r\nこれやりました。\r\n${new Date().toLocaleString()}`
                         });
+                        isDateUpd = true;
                     }
                 } else if (data.type === JOB_TYPE.GAME) {
                     if (data.job === JOB_ACT.INSERT || data.job === JOB_ACT.UPDATE) {
@@ -93,7 +96,11 @@ const run = async() => {
         }
 
         // 管理情報を更新
-        await mysql.updateManage(mysqlConnection, {id: dms._realData.events[0].id, upd: new Date()});
+        if (isDateUpd) {
+            await mysql.updateManage(mysqlConnection, {id: dms._realData.events[0].id, upd: new Date()});
+        } else {
+            await mysql.updateManage(mysqlConnection, {id: dms._realData.events[0].id});
+        }
 
     } catch(err) {
         console.log(err);
