@@ -59,7 +59,7 @@ module.exports.getParam = (msg) => {
         if (commandParamText === null) return null;
     
         const commandParams = commandParamText[0].split(' ');
-        const param = { code:commandParams[1], name:[2] };
+        const param = { code:commandParams[1], name:commandParams[2] };
         return { type: JOB_TYPE.FRIEND, job: JOB_ACT.UPDATE, param: param };
     }
 
