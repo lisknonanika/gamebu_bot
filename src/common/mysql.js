@@ -95,7 +95,7 @@ module.exports.updateFriend = async(con, param) => {
         const games = await this.findGame(con);
         let newGame = '';
         for (let data of games) {
-            if (param.game.indexOf(data.code)) newGame += data.code;
+            if (param.game.indexOf(data.code) >= 0) newGame += data.code;
         }
         param.game = newGame;
     }
